@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-CFU (XML bytes) -> CSV tabulaire (dans Pyodide / navigateur)
-- Export RAW : toutes les balises LigneBudget aplaties
-- Export SCDL : mapping vers schéma SCDL budget (partiel)
-- Ajout de l'identifiant LigneBudget -> BGT_ID
-
-Stdlib only
-"""
-
 import csv
 import io
 import xml.etree.ElementTree as ET
@@ -153,3 +143,4 @@ def convert_cfu_bytes(xml_bytes: bytes, csv_separator: str = ","):
     }
 
     return raw_csv, scdl_csv, stats
+
