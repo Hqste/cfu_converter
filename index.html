@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CFU XML → CSV (RAW + SCDL)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 32px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; margin: 16px 0; }
+    label { display:block; margin: 10px 0 6px; font-weight: 600; }
+    input, select, button { font-size: 14px; padding: 8px 10px; }
+    button { cursor:pointer; }
+    .row { display:flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    #log { white-space: pre-wrap; background:#0b1020; color:#d7e2ff; padding: 12px; border-radius: 12px; min-height: 80px; }
+    .muted { color:#666; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>CFU (XML) → CSV tabulaire</h1>
+  <p class="muted">Conversion locale (dans ton navigateur) via Pyodide. Aucun envoi de fichier.</p>
+
+  <div class="card">
+    <label>Fichier CFU (.xml)</label>
+    <input id="file" type="file" accept=".xml,application/xml,text/xml" />
+
+    <div class="row" style="margin-top:12px;">
+      <div>
+        <label>Séparateur CSV</label>
+        <select id="sep">
+          <option value=",">, (virgule)</option>
+          <option value=";">; (point-virgule)</option>
+        </select>
+      </div>
+
+      <div style="margin-top:26px;">
+        <button id="run" disabled>Convertir</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Sorties</h2>
+    <div class="row">
+      <a id="dl_raw" href="#" download="budget_raw.csv" style="display:none;">Télécharger RAW</a>
+      <a id="dl_scdl" href="#" download="budget_scdl.csv" style="display:none;">Télécharger SCDL</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Logs</h2>
+    <div id="log">Chargement de Pyodide…</div>
+  </div>
+
+  <!-- Pyodide -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
