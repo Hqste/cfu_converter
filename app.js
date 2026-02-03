@@ -20,7 +20,7 @@ function setDownloadLink(aEl, filename, content) {
 
 async function init() {
   pyodide = await loadPyodide();
-  logEl.textContent = "Pyodide prêt ✅";
+  logEl.textContent = "Pyodide prêt";
   runBtn.disabled = false;
 
   // Charger le code python converter.py dans Pyodide
@@ -38,7 +38,7 @@ runBtn.addEventListener("click", async () => {
   try {
     const file = fileEl.files?.[0];
     if (!file) {
-      log("⚠️ Choisis un fichier XML.");
+      log("Choisis un fichier XML.");
       return;
     }
 
@@ -67,17 +67,18 @@ raw_csv, scdl_csv, stats = convert_cfu_bytes(XML_BYTES.to_py(), CSV_SEP)
     const scdlCsv = out.get(1);
     const stats = out.get(2);
 
-    setDownloadLink(dlRaw, "budget_raw.csv", rawCsv);
-    setDownloadLink(dlScdl, "budget_scdl.csv", scdlCsv);
+    setDownloadLink(dlRaw, "budget_brut.csv", rawCsv);
+    setDownloadLink(dlScdl, "budget_schema.csv", scdlCsv);
 
-    log("✅ Terminé");
+    log("Terminé");
     log("Stats: " + JSON.stringify(stats, null, 2));
 
     out.destroy?.();
   } catch (e) {
     console.error(e);
-    log("❌ Erreur: " + (e?.message || e));
+    log("Erreur: " + (e?.message || e));
   }
 });
 
 init();
+
