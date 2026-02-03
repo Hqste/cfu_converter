@@ -16,8 +16,8 @@
   </style>
 </head>
 <body>
-  <h1>CFU (XML) → CSV tabulaire</h1>
-  <p class="muted">Conversion locale (dans ton navigateur) via Pyodide. Aucun envoi de fichier.</p>
+  <h1>XML CFU → CSV tabulaire (lignes budgétaires seulement)</h1>
+  <p class="muted">Conversion locale, Aucun envoi de fichier.</p>
 
   <div class="card">
     <label>Fichier CFU (.xml)</label>
@@ -41,8 +41,8 @@
   <div class="card">
     <h2>Sorties</h2>
     <div class="row">
-      <a id="dl_raw" href="#" download="budget_raw.csv" style="display:none;">Télécharger RAW</a>
-      <a id="dl_scdl" href="#" download="budget_scdl.csv" style="display:none;">Télécharger SCDL</a>
+      <a id="dl_raw" href="#" download="budget_brut.csv" style="display:none;">Télécharger RAW</a>
+      <a id="dl_scdl" href="#" download="budget_schema.csv" style="display:none;">Télécharger SCDL</a>
     </div>
   </div>
 
@@ -56,3 +56,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+
