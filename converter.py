@@ -68,7 +68,7 @@ def map_to_scdl(raw: dict, header: dict) -> dict:
     return {
         "BGT_ID": raw.get("LigneBudget_id", ""),
 
-        "BGT_NATDEC": "compte administratif",
+        "BGT_NATDEC": "compte financier unique",
         "BGT_ANNEE": header.get("Exercice", ""),
         "BGT_SIRET": header.get("Siret", ""),
         "BGT_NOM": header.get("Nom", ""),
