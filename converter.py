@@ -61,9 +61,9 @@ def iter_lignebudget_bytes(xml_bytes: bytes):
 
 
 def map_to_scdl(raw: dict, header: dict) -> dict:
-    codrd = (raw.get("CodRD", "") or "").upper().strip()
-    artspe = (raw.get("ArtSpe", "") or "").lower().strip()
-    opbudg = (raw.get("OpBudg", "") or "").strip()
+    codrd = (raw.get("CodRD", "") or "").upper()
+    artspe = (raw.get("ArtSpe", "") or "").lower()
+    opbudg = raw.get("OpBudg", "")
 
     return {
         "BGT_ID": raw.get("LigneBudget_id", ""),
@@ -98,12 +98,7 @@ def map_to_scdl(raw: dict, header: dict) -> dict:
 
 def _write_csv_string(rows, fields, sep: str) -> str:
     out = io.StringIO()
-    writer = csv.DictWriter(
-        out,
-        fieldnames=fields,
-        delimiter=sep,
-        quoting=csv.QUOTE_MINIMAL
-    )
+    writer = csv.DictWriter(out, fieldnames=fields, delimiter=sep, quoting=csv.QUOTE_MINIMAL)
     writer.writeheader()
     for r in rows:
         writer.writerow({k: r.get(k, "") for k in fields})
@@ -121,36 +116,31 @@ def convert_cfu_bytes(xml_bytes: bytes, csv_separator: str = ","):
         raw_fields.update(row.keys())
 
     raw_fields = sorted(raw_fields)
+
     raw_csv = _write_csv_string(raw_rows, raw_fields, csv_separator)
 
     scdl_fields = [
         "BGT_ID",
-        "BGT_NATDEC", "BGT_ANNEE", "BGT_SIRET", "BGT_NOM",
-        "BGT_CONTNAT", "BGT_CONTNAT_LABEL",
-        "BGT_NATURE", "BGT_NATURE_LABEL",
-        "BGT_FONCTION", "BGT_FONCTION_LABEL",
-        "BGT_OPERATION", "BGT_SECTION",
-        "BGT_OPBUDG", "BGT_CODRD", "BGT_ARTSPE",
-        "BGT_MTREAL", "BGT_MTBUDGPREC", "BGT_MTRARPREC",
-        "BGT_MTPROPNOUV", "BGT_MTPREV", "BGT_CREDOUV", "BGT_MTRAR3112"
+        "BGT_NATDEC","BGT_ANNEE","BGT_SIRET","BGT_NOM",
+        "BGT_CONTNAT","BGT_CONTNAT_LABEL",
+        "BGT_NATURE","BGT_NATURE_LABEL",
+        "BGT_FONCTION","BGT_FONCTION_LABEL",
+        "BGT_OPERATION","BGT_SECTION",
+        "BGT_OPBUDG","BGT_CODRD","BGT_ARTSPE",
+        "BGT_MTREAL","BGT_MTBUDGPREC","BGT_MTRARPREC",
+        "BGT_MTPROPNOUV","BGT_MTPREV","BGT_CREDOUV","BGT_MTRAR3112"
     ]
 
-    scdl_rows = []
-    for r in raw_rows:
-        mapped = map_to_scdl(r, header)
-        if mapped.get("BGT_CODRD", "").strip() != "":
-            scdl_rows.append(mapped)
-
+    scdl_rows = [map_to_scdl(r, header) for r in raw_rows]
     scdl_csv = _write_csv_string(scdl_rows, scdl_fields, csv_separator)
 
     stats = {
         "exercice": header.get("Exercice", ""),
         "siret": header.get("Siret", ""),
         "nom": header.get("Nom", ""),
-        "lignes_raw": len(raw_rows),
-        "lignes_scdl": len(scdl_rows),
-        "lignes_supprimees_codrd_vide": len(raw_rows) - len(scdl_rows),
+        "lignes": len(raw_rows),
         "raw_cols": len(raw_fields),
     }
 
     return raw_csv, scdl_csv, stats
+
